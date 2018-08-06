@@ -8,7 +8,9 @@ I built a super simple API with https://github.com/swagger-api/swagger-node. It'
 
 ##### Pre-Reqs:
 NodeJs
+
 swagger-node (not necessary but nice to have so you can play with the swagger editor)
+
 redis
 
 ##### Assumptions:
