@@ -1,0 +1,219 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Redis Music - Express Example
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /add_song:
+    x-swagger-router-controller: music
+    post:
+      description: Adds a song to the database
+      operationId: add
+      parameters:
+        - in: body
+          name: song
+          description: The song to create.
+          schema:
+            type: object
+            required:
+              - title
+              - artist
+              - album
+            properties:
+              title:
+                type: string
+              artist:
+                type: string
+              album:
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/SongResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /get_song_by_title:
+    x-swagger-router-controller: music
+    get:
+      description: Gets a song by title
+      operationId: getByTitle
+      parameters:
+        - name: title
+          in: query
+          description: The title of the song
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/SongResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /get_album_by_title:
+    x-swagger-router-controller: music
+    get:
+      description: Gets a collection of songs by album 
+      operationId: getAlbumByTitle
+      parameters:
+        - name: album
+          in: query
+          description: The album who's songs we want to fetch
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/AlbumResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /get_all_albums:
+    x-swagger-router-controller: music
+    get:
+      description: Lists all albums in the database by title
+      operationId: getAllAlbums
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/AlbumsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /get_all_artists:
+    x-swagger-router-controller: music
+    get:
+      description: Lists all artists in the database by name
+      operationId: getAllArtists
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/ArtistsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /get_artist_by_name:
+    x-swagger-router-controller: music
+    get:
+      description: Get's an artists discography
+      operationId: getArtistByName
+      parameters:
+        - name: name
+          in: query
+          description: The name of the artist to look up
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/ArtistResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /get_all_songs:
+    x-swagger-router-controller: music
+    get:
+      description: Lists all songs in the database
+      operationId: getAllSongs
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/LibraryResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /swagger:
+    x-swagger-pipe: swagger_raw
+    
+# complex objects have schema definitions
+definitions:
+  AlbumsResponse:
+    properties:
+      albums:
+        type: array
+        items:
+          type: string
+  ArtistsResponse:
+    properties:
+      artists:
+        type: array
+        items: 
+          type: string
+  AlbumResponse:
+    properties:
+      title:
+        type: string
+      artist:
+        type: string
+      songs:
+        type: array
+        items: 
+          type: string
+  ArtistResponse:
+    properties:
+      artist:
+        type: string
+      albums:
+        type: array
+        items:
+          type: string
+      songs:
+        type: array
+        items: 
+          type: string
+  LibraryResponse:
+    properties:
+      songs:
+        type: array
+        items:
+          type: string
+  SongResponse:
+    properties:
+      title:
+        type: string
+      artist: 
+        type: string
+      album:
+        type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
