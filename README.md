@@ -14,5 +14,11 @@ redis
 ##### Assumptions:
 you're connecting on localhost.
 
+##### Start
+
+1. pull repo and cd into it
+2. npm i
+3. swagger start (or npm start)
+
 ### TODO:
 Make the tests pass. The API works as expected, I just need to clean up some stuff in the tests themselves.
